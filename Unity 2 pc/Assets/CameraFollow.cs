@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public float FollowSpeed = 2f;
-    public float yOffset = 1f;
-    public Transform target;
+    [SerializeField] private float FollowSpeed = 2f;
+    [SerializeField] private float yOffset = 1f;
+    [SerializeField] private Transform target;
 
     // Update is called once per frame
     void Update()

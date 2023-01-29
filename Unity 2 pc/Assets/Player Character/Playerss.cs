@@ -7,10 +7,14 @@ public class Playerss : MonoBehaviour
     [SerializeField] private float speed = 5;
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float horizontalInput;
+
     [SerializeField] private bool isGrounded = false;
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
     [SerializeField] private SpriteRenderer sprite;
+
+    private enum MovementState { idle, running, jumping, falling }
 
     // Update is called once per frame
     void Update()
@@ -42,19 +46,32 @@ public class Playerss : MonoBehaviour
 
     private void UpdateAnimationState()
     {
+        MovementState State;
+
         if (horizontalInput > 0f)
         {
-            anim.SetBool("Running", true);
+            State = MovementState.running;
             sprite.flipX = false;
         }
         else if (horizontalInput < 0f)
         {
-            anim.SetBool("Running", true);
+            State = MovementState.running;
             sprite.flipX = true;
         }
         else
         {
-            anim.SetBool("Running", false);
+            State = MovementState.idle;
         }
+
+        if (rb.velocity.y > .01f)
+        {
+            State = MovementState.jumping;
+        }
+        else if (rb.velocity.y < -.01f)
+        {
+            State = MovementState.falling;
+        }
+
+        anim.SetInteger("State", (int)State);
     }
 }
